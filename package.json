@@ -1,0 +1,42 @@
+{
+  "name": "@do-while-for-each/automation",
+  "description": "Cross-browser web automation",
+  "version": "1.0.0",
+  "main": "dist/cjs/index.js",
+  "types": "dist/types/index.d.ts",
+  "homepage": "https://github.com/dwfe/automation",
+  "bugs": "https://github.com/dwfe/automation/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dwfe/automation.git"
+  },
+  "keywords": [
+    "automation",
+    "automation environment",
+    "playwright"
+  ],
+  "author": "Do|While|For|Each",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "dwfeFs cleanDir . --noConfirm --fileNames=\"dist;node_modules;package-lock.json\"",
+    "build": "dwfeFs rmForce dist --noConfirm && tsc -b src/tsconfig.json",
+    "types": "tsc -b config/tsconfig.types.json",
+    "version": "npm run build && npm run types",
+    "postversion": "git push",
+    "deploy": "npm version patch && npm publish"
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.24"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
