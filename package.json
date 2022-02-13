@@ -31,8 +31,8 @@
     "deploy": "npm version patch && npm publish"
   },
   "dependencies": {
-    "@do-while-for-each/common": "^1.1.1",
-    "@do-while-for-each/math": "^1.0.26",
+    "@do-while-for-each/common": "^1.1.2",
+    "@do-while-for-each/math": "^1.0.27",
     "@do-while-for-each/rxjs": "^1.1.1",
     "@do-while-for-each/env": "^1.0.5",
     "@do-while-for-each/fs": "^1.2.12",

@@ -1,4 +1,4 @@
-import {isNumber} from '@do-while-for-each/math'
+import {isNumber} from '@do-while-for-each/common'
 import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract'
 import {AutomationEnvironment} from './automation.environment'
 import {PngUtils} from './png.utils'
