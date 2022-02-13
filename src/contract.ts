@@ -56,11 +56,11 @@ export interface ITask extends Partial<IStoppable> {
    */
   id: string;
   getScript: () => TCommand[];
-
   beforeScript?: TCommand[];
   afterScript?: TCommand[];
 
   page?: Page; // страница, на которой выполняется задача
+
   saveResponses?: boolean; // флаг, надо ли сохранять ответ сервера (потом может быть использован как mock-данные)
   mockResponses?: boolean; // флаг, надо ли вместо прямого обращения к серверу брать ответ из mock-данных
   delayForDraw?: number;
@@ -108,9 +108,8 @@ export interface IInterception {
 }
 
 export type TInterceptionType =
-  'single'     // один запрос - один ответ
-  | 'multiple' // несколько запросов - несколько ответов
-  ;
+  'single' |  // один запрос - один ответ
+  'multiple'; // несколько запросов - несколько ответов
 
 export type TInterceptionMatch = string | RegExp;
 

@@ -25,8 +25,6 @@ export class TaskExecutor {
     for (const command of script) {
       this.debug(command);
       const page = task.page;
-      if (!page)
-        throw new Error(`Отсутствует task.page`);
       try {
         switch (command.type) {
           case 'newPage': {
@@ -35,65 +33,67 @@ export class TaskExecutor {
             break;
           }
           case 'closePage': {
-            page.close();
+            checkFields(task, ['page']);
+            page?.close();
             delete task.page;
             break;
           }
           case 'goto': {
-            await page.goto(this.getUrl(command.data));
+            checkFields(task, ['page']);
+            await page?.goto(this.getUrl(command.data));
             break;
           }
           case 'screenshot': {
-            if (!task.actionsBeforeScreenshot)
-              throw new Error(`Отсутствует task.actionsBeforeScreenshot`);
-            await task.actionsBeforeScreenshot();
-            const buf = await page.screenshot();
+            checkFields(task, ['page', 'actionsBeforeScreenshot']);
+            await task.actionsBeforeScreenshot?.();
+            const buf = await page?.screenshot() as Buffer;
             task.setScreenshot?.(buf);
             if (command.data.save)
               this.storage.set(task, {type: 'screenshot'}, buf);
             break;
           }
           case 'compareScreenshot': {
+            checkFields(task, ['screenshot']);
             if (this.options.screenshot.type !== 'png')
               throw new Error(`Поддерживается только 'png' при сравнении скриншотов`);
-            if (!task.screenshot)
-              throw new Error(`Отсутствует task.screenshot`);
             const origImgBuf = this.storage.get(task, {type: 'screenshot'}).buf;
-            const screenshot = await task.screenshot();
+            const screenshot = await task.screenshot?.() as Buffer;
             const compareResult = this.pngUtils.compareBuf(origImgBuf, screenshot);
             task.setCompareScreenshotResult?.(compareResult);
             break;
           }
           case 'wait': {
+            checkFields(task, ['page']);
             if (isNumber(command.data))
-              await page.waitForTimeout(command.data as number);
+              await page?.waitForTimeout(command.data as number);
             break;
           }
           case 'waitForAllDataReceived': {
-            if (!task.allDataReceived)
-              throw new Error(`Отсутствует task.allDataReceived`);
-            await task.allDataReceived();
+            checkFields(task, ['allDataReceived']);
+            await task.allDataReceived?.();
             break;
           }
           case 'click': {
+            checkFields(task, ['page']);
             const {selector, options, useFullSelector} = command.data;
-            await page.click(this.getSelector(selector, useFullSelector), options);
+            await page?.click(this.getSelector(selector, useFullSelector), options);
             break;
           }
           case 'fill': {
+            checkFields(task, ['page']);
             const {selector, value, options, useFullSelector} = command.data;
-            await page.fill(this.getSelector(selector, useFullSelector), value, options);
+            await page?.fill(this.getSelector(selector, useFullSelector), value, options);
             break;
           }
           case 'mouseClick': {
+            checkFields(task, ['page']);
             const {point, options} = command.data;
-            await page.mouse.click(point[0], point[1], options);
+            await page?.mouse.click(point[0], point[1], options);
             break;
           }
           case 'login': {
-            if (!task.login)
-              throw new Error(`Отсутствует task.login`);
-            await task.login();
+            checkFields(task, ['login']);
+            await task.login?.();
             break;
           }
           default:
@@ -163,4 +163,11 @@ export class TaskExecutor {
 
 //endregion
 
+}
+
+function checkFields(task: ITask, fieldNames: Array<keyof ITask>) {
+  for (const fieldName of fieldNames) {
+    if (!task[fieldName])
+      throw new Error(`Отсутствует task.${fieldName}`);
+  }
 }
