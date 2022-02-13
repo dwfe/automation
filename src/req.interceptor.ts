@@ -1,5 +1,5 @@
 import {Page, Request, Route} from 'playwright';
-import fetch, {Response} from 'node-fetch';
+import fetch, {RequestInit, Response} from 'node-fetch';
 import {IInterception, IInterceptionInfo, IStorage, ITask, TInterceptionMatch} from './contract';
 import {AutomationEnvironment} from './automation.environment';
 import {getUrlPath} from './common';
@@ -54,7 +54,7 @@ export class ReqInterceptor {
     }
   }
 
-  private async getResponse(key: string, req): Promise<IResponse> {
+  private async getResponse(key: string, req: Request): Promise<IResponse> {
     return this.task.mockResponses
       ? await this.getMock(key)
       : await this.requestToServer(req);
@@ -75,14 +75,14 @@ export class ReqInterceptor {
     const res: Response = await fetch(req.url(), {
       method: req.method(),
       headers: req.headers(),
-      body: req.postData(),
+      body: req.postData() as RequestInit['body'],
     });
     const buf = await res.buffer();
     this.debug(` - ответ сервера, size`, buf.length);
     return {
       status: res.status,
       body: buf,
-      contentType: res.headers.get('content-type'),
+      contentType: res.headers.get('content-type') as string,
     };
   }
 
@@ -94,11 +94,11 @@ export class ReqInterceptor {
 
   private setCompleted(match: TInterceptionMatch) {
     const info = this.interceptions.get(match.toString());
-    if (info.completed) {
+    if (info?.completed) {
       this.checkAllDataReceived();
       return;
     }
-    switch (info.type) {
+    switch (info?.type) {
       case 'single': {
         this.completeInterception(match, info);
         break;
@@ -110,7 +110,7 @@ export class ReqInterceptor {
         break;
       }
       default:
-        throw new Error(`Неизвестный тип '${info.type}' перехвата ${match}`);
+        throw new Error(`Неизвестный тип '${info?.type}' перехвата ${match}`);
     }
   }
 
@@ -125,7 +125,7 @@ export class ReqInterceptor {
     const incomplete = Array.from(this.interceptions.values()).filter(info => !info.completed);
     if (incomplete.length === 0) {
       this.debug(` - все данные получены`);
-      this.task.setAllDataReceived();
+      this.task.setAllDataReceived?.();
     }
   }
 
@@ -133,6 +133,8 @@ export class ReqInterceptor {
 //region Support
 
   private get page(): Page {
+    if (!this.task.page)
+      throw new Error(`Отсутствует task.page`);
     return this.task.page;
   }
 
@@ -140,7 +142,7 @@ export class ReqInterceptor {
     return this.env.storage
   }
 
-  private debug(...args) {
+  private debug(...args: any[]) {
     return this.env.debug(...args);
   }
 

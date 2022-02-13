@@ -1,8 +1,8 @@
+import {readFileSync, writeFileSync} from 'fs';
 import {PNG, PNGWithMetadata} from 'pngjs';
-import pixelmatch from 'pixelmatch';
 import * as JPEG from 'jpeg-js';
 import {RawImageData} from 'jpeg-js';
-import {readFileSync, writeFileSync} from 'fs';
+import pixelmatch from 'pixelmatch';
 import {defaultPixelmatchOptions, IAutomationEnvironmentOptions, IImgCompareResult} from './contract';
 import {AutomationEnvironment} from './automation.environment';
 
@@ -51,7 +51,7 @@ export class PngUtils {
 //region Support
 
   private get options(): IAutomationEnvironmentOptions {
-    return this.env.options;
+    return this.env.opt;
   }
 
 //endregion

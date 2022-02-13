@@ -1,12 +1,12 @@
 import {BrowserContextOptions, LaunchOptions, Mouse, Page} from 'playwright'
-import {IStoppable, Type} from '@do-while-for-each/common'
+import {IStoppable, TRunMode, Type} from '@do-while-for-each/common'
 import {TPoint} from '@do-while-for-each/math'
 import {PixelmatchOptions} from 'pixelmatch'
 import {PNG} from 'pngjs'
 
 export interface IAutomationEnvironmentOptions {
   browserType: 'chromium' | 'webkit' | 'firefox';
-  browser: LaunchOptions;
+  launchOpt: LaunchOptions;
   browserContext: BrowserContextOptions;
   screenshot: NonNullable<Parameters<Page['screenshot']>[0]>;
   pixelmatch: PixelmatchOptions;
@@ -20,6 +20,7 @@ export interface IAutomationEnvironmentOptions {
     env?: boolean;           // флаг, надо ли закрыть окружение, когда у него будет вызван метод .close()
     pageOnTaskEnd?: boolean; // флаг, надо ли оставить страницу открытой после выполнения всех команд задачи
   },
+  runMode?: TRunMode,
 }
 
 // https://www.npmjs.com/package/pixelmatch#pixelmatchimg1-img2-output-width-height-options

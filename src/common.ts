@@ -5,7 +5,7 @@ export const getUrlPath = (url: string): string => {
   return u.href.replace(u.origin, ''); // весь url минус origin
 }
 
-export const joinUrl = (path: string, baseUrl: string) => {
+export const joinUrl = (path: string, baseUrl = '') => {
   if (!baseUrl || path.includes('http://') || path.includes('https://'))
     return path;
   return baseUrl + (path[0] === '/' ? path : `/${path}`);

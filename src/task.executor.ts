@@ -25,6 +25,8 @@ export class TaskExecutor {
     for (const command of script) {
       this.debug(command);
       const page = task.page;
+      if (!page)
+        throw new Error(`Отсутствует task.page`);
       try {
         switch (command.type) {
           case 'newPage': {
@@ -33,7 +35,7 @@ export class TaskExecutor {
             break;
           }
           case 'closePage': {
-            task.page?.close();
+            page.close();
             delete task.page;
             break;
           }
@@ -42,9 +44,11 @@ export class TaskExecutor {
             break;
           }
           case 'screenshot': {
-            await task.actionsBeforeScreenshot?.();
+            if (!task.actionsBeforeScreenshot)
+              throw new Error(`Отсутствует task.actionsBeforeScreenshot`);
+            await task.actionsBeforeScreenshot();
             const buf = await page.screenshot();
-            task.setScreenshot(buf);
+            task.setScreenshot?.(buf);
             if (command.data.save)
               this.storage.set(task, {type: 'screenshot'}, buf);
             break;
@@ -52,18 +56,22 @@ export class TaskExecutor {
           case 'compareScreenshot': {
             if (this.options.screenshot.type !== 'png')
               throw new Error(`Поддерживается только 'png' при сравнении скриншотов`);
+            if (!task.screenshot)
+              throw new Error(`Отсутствует task.screenshot`);
             const origImgBuf = this.storage.get(task, {type: 'screenshot'}).buf;
             const screenshot = await task.screenshot();
             const compareResult = this.pngUtils.compareBuf(origImgBuf, screenshot);
-            task.setCompareScreenshotResult(compareResult);
+            task.setCompareScreenshotResult?.(compareResult);
             break;
           }
           case 'wait': {
             if (isNumber(command.data))
-              await page.waitForTimeout(command.data);
+              await page.waitForTimeout(command.data as number);
             break;
           }
           case 'waitForAllDataReceived': {
+            if (!task.allDataReceived)
+              throw new Error(`Отсутствует task.allDataReceived`);
             await task.allDataReceived();
             break;
           }
@@ -83,6 +91,8 @@ export class TaskExecutor {
             break;
           }
           case 'login': {
+            if (!task.login)
+              throw new Error(`Отсутствует task.login`);
             await task.login();
             break;
           }
@@ -117,7 +127,7 @@ export class TaskExecutor {
 //region Support
 
   private get options(): IAutomationEnvironmentOptions {
-    return this.env.options;
+    return this.env.opt;
   }
 
   private get storage(): IStorage {
@@ -128,7 +138,7 @@ export class TaskExecutor {
     return this.env.pngUtils;
   }
 
-  private debug(...args) {
+  private debug(...args: any[]) {
     return this.env.debug(...args);
   }
 

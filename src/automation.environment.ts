@@ -1,18 +1,18 @@
 import * as playwright from 'playwright';
 import {Browser, BrowserContext, Page} from 'playwright';
-import {config} from 'dotenv';
+import {prepareEnv} from '@do-while-for-each/env';
 import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract';
 import {TaskExecutor} from './task.executor';
 import {PngUtils} from './png.utils';
 
 export class AutomationEnvironment {
 
-  static async of(options: IAutomationEnvironmentOptions, id: string): Promise<AutomationEnvironment> {
-    config(); // перенести переменные окружения в process.env
-
-    const browser = await playwright[options.browserType].launch(options.browser);
-    await browser.newContext(options.browserContext);
-    return new AutomationEnvironment(id, browser, options)
+  static async of(opt: IAutomationEnvironmentOptions, id: string): Promise<AutomationEnvironment> {
+    const {runMode, browserType, launchOpt, browserContext} = opt;
+    prepareEnv(runMode || 'test');
+    const browser = await playwright[browserType].launch(launchOpt);
+    await browser.newContext(browserContext);
+    return new AutomationEnvironment(id, browser, opt)
   }
 
   readonly taskExecutor: TaskExecutor;
@@ -21,14 +21,14 @@ export class AutomationEnvironment {
 
   constructor(public readonly id: string,
               public readonly browser: Browser,
-              public readonly options: IAutomationEnvironmentOptions) {
+              public readonly opt: IAutomationEnvironmentOptions) {
     this.taskExecutor = new TaskExecutor(this);
     this.pngUtils = new PngUtils(this);
-    this.storage = new options.storage.variant(this);
+    this.storage = new opt.storage.variant(this);
   }
 
   close() {
-    if (!this.options.isLeaveOpen?.env)
+    if (!this.opt.isLeaveOpen?.env)
       this.browser.close();
     this.storage.clean();
   }
@@ -49,10 +49,10 @@ export class AutomationEnvironment {
     await this.taskExecutor.run(tasks);
   }
 
-  debug(...args) {
-    if (this.options.isDebug) {
-      console.log(...args);
-    }
+  debug(...args: string[]) {
+    if (!this.opt.isDebug)
+      return;
+    console.log(...args);
   }
 
 }

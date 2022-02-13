@@ -31,10 +31,22 @@
     "deploy": "npm version patch && npm publish"
   },
   "dependencies": {
-
+    "@do-while-for-each/common": "^1.1.1",
+    "@do-while-for-each/math": "^1.0.26",
+    "@do-while-for-each/rxjs": "^1.1.1",
+    "@do-while-for-each/env": "^1.0.5",
+    "@do-while-for-each/fs": "^1.2.12",
+    "jpeg-js": "0.4.3",
+    "node-fetch": "2.6.7",
+    "pixelmatch": "5.2.1",
+    "playwright": "1.9.1"
   },
   "devDependencies": {
-    "@types/node": "^16.11.24"
+    "@types/node": "^16.11.24",
+    "@types/jpeg-js": "0.3.7",
+    "@types/node-fetch": "2.5.12",
+    "@types/pixelmatch": "5.2.4",
+    "@types/pngjs": "3.4.2"
   },
   "publishConfig": {
     "access": "public"

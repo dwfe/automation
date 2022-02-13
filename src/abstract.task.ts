@@ -1,25 +1,25 @@
-import {filter, first, Subj} from '@do-while-for-each/rxjs';
+import {filter, firstValueFrom, Subj} from '@do-while-for-each/rxjs';
 import {Page} from 'playwright';
 import {IImgCompareResult, ITask, TCommand} from './contract';
 
 export abstract class AbstractTask implements ITask {
 
-  private allDataReceivedWrap = new Subj<any>({type: 'shareReplay', bufferSize: 1}, null);
-  private screenshotWrap = new Subj<Buffer>({type: 'shareReplay', bufferSize: 1}, null);
-  private compareScreenshotWrap = new Subj<IImgCompareResult>({type: 'shareReplay', bufferSize: 1}, null);
+  private allDataReceivedWrap = new Subj<any>({type: 'shareReplay', bufferSize: 1, initValue: null});
+  private screenshotWrap = new Subj<Buffer | null>({type: 'shareReplay', bufferSize: 1, initValue: null});
+  private compareScreenshotWrap = new Subj<IImgCompareResult | null>({type: 'shareReplay', bufferSize: 1, initValue: null});
 
   constructor(public readonly id: string) {
   }
 
   abstract getScript(): TCommand[];
 
-  page?: Page;
+  page!: Page;
 
   setAllDataReceived() {
     this.allDataReceivedWrap.setValue(true);
   }
 
-  async allDataReceived(): Promise<any> {
+  allDataReceived(): Promise<any> {
     return result(this.allDataReceivedWrap);
   }
 
@@ -27,16 +27,16 @@ export abstract class AbstractTask implements ITask {
     this.screenshotWrap.setValue(buf);
   }
 
-  async screenshot(): Promise<Buffer> {
-    return result(this.screenshotWrap);
+  screenshot(): Promise<Buffer> {
+    return result(this.screenshotWrap) as Promise<Buffer>;
   }
 
   setCompareScreenshotResult(result: IImgCompareResult) {
     this.compareScreenshotWrap.setValue(result);
   }
 
-  async compareScreenshotResult(): Promise<IImgCompareResult> {
-    return result(this.compareScreenshotWrap);
+  compareScreenshotResult(): Promise<IImgCompareResult> {
+    return result(this.compareScreenshotWrap) as Promise<IImgCompareResult>;
   }
 
   stop(): void {
@@ -47,10 +47,9 @@ export abstract class AbstractTask implements ITask {
 
 }
 
-const result = async <T>(wrap: Subj<T>): Promise<T> =>
-  wrap.lastValue
-  || wrap.value$.pipe(
-  filter(data => !!data),
-  first()
-  ).toPromise()
+const result = async <T>({lastValue, value$}: Subj<T>): Promise<T> =>
+    lastValue
+    || firstValueFrom(value$.pipe(
+      filter(data => !!data),
+    ))
 ;

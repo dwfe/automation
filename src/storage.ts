@@ -1,5 +1,5 @@
 import {lstatSync, readdirSync, readFileSync, unlinkSync, writeFileSync} from 'fs';
-import {FileCheck, FileJson} from '../fs';
+import {ensureDirExists, FileJson} from '@do-while-for-each/fs';
 import {join} from 'path';
 import {IAutomationEnvironmentOptions, IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue, ITask} from './contract';
 import {AutomationEnvironment} from './automation.environment';
@@ -53,8 +53,8 @@ export class Storage implements IStorage {
 //region Структура хранилища
 
   private initDirs() {
-    FileCheck.ensureDir(this.dir);
-    FileCheck.ensureDir(this.environmentDir);
+    ensureDirExists(this.dir);
+    ensureDirExists(this.environmentDir);
   }
 
   /**
@@ -63,9 +63,9 @@ export class Storage implements IStorage {
    *  - обновить соответствующие переменные.
    */
   private updatePosition(task: ITask, meta: IFileMetadata) {
-    FileCheck.ensureDir(this.getStorageFileTypeDir(meta));
+    ensureDirExists(this.getStorageFileTypeDir(meta));
     if (meta.type === 'response') {
-      FileCheck.ensureDir(this.getTaskDir(task));
+      ensureDirExists(this.getTaskDir(task));
     }
   }
 
@@ -77,14 +77,14 @@ export class Storage implements IStorage {
     return join(this.dir, this.env.id);
   }
 
-  private storageFileTypeDir: string;
+  private storageFileTypeDir!: string;
 
   private getStorageFileTypeDir(meta: IFileMetadata) {
     return this.storageFileTypeDir = join(this.environmentDir, meta.type);
   }
 
-  private taskDir: string;
-  private taskIndexFilePath: string;
+  private taskDir!: string;
+  private taskIndexFilePath!: string;
   private indexFileName = 'index.json';
 
   private getTaskDir(task: ITask) {
@@ -105,15 +105,16 @@ export class Storage implements IStorage {
       }
       case 'response': {
         if (action === 'set') {
-          contentType = meta.contentType;
+          contentType = meta.contentType as string;
           fileName = `${Math.random().toString(36).substr(2, 8)}${getFileExtention(contentType)}`;
-        } else {
+        } else if (meta.key) {
           const index = this.currentIndex[meta.key];
           if (index === undefined)
             throw new Error(`Storage#file: в индексе нет такого ключа '${meta.key}'`);
           fileName = index.fileName;
           contentType = index.contentType;
-        }
+        } else
+          throw new Error(`Storage#file: не смог определить fileName`);
         filePath = join(this.taskDir, fileName);
         break;
       }
@@ -133,7 +134,7 @@ export class Storage implements IStorage {
   }
 
   private updateIndex(meta: IFileMetadata, value: IStorageIndexValue) {
-    if (meta.type !== 'response')
+    if (!meta.key)
       return;
     const index = this.currentIndex;
     index[meta.key] = value;
@@ -179,10 +180,10 @@ export class Storage implements IStorage {
 //region Support
 
   private get options(): IAutomationEnvironmentOptions {
-    return this.env.options;
+    return this.env.opt;
   }
 
-  private debug(...args) {
+  private debug(...args: any[]) {
     return this.env.debug(...args);
   }
 
