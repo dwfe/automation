@@ -1,12 +1,7 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "@do-while-for-each/tsconfig/tsconfig.types.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "declaration": true,
-    "declarationMap": true,
     "declarationDir": "../dist/types",
-    "emitDeclarationOnly": true
   },
   "include": [
     "../src/**/*"

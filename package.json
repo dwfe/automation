@@ -42,7 +42,7 @@
     "playwright": "1.9.1"
   },
   "devDependencies": {
-    "@types/node": "^16.11.24",
+    "@do-while-for-each/tsconfig": "^1.0.3",
     "@types/jpeg-js": "0.3.7",
     "@types/node-fetch": "2.5.12",
     "@types/pixelmatch": "5.2.4",
