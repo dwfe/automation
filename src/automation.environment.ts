@@ -1,13 +1,13 @@
 import * as playwright from 'playwright';
 import {Browser, BrowserContext, Page} from 'playwright';
 import {prepareEnv} from '@do-while-for-each/env';
-import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract';
+import {IAutomationEnvironmentOpt, IStorage, ITask} from './contract';
 import {TaskExecutor} from './task.executor';
 import {PngUtils} from './png.utils';
 
 export class AutomationEnvironment {
 
-  static async of(opt: IAutomationEnvironmentOptions, id: string): Promise<AutomationEnvironment> {
+  static async of(opt: IAutomationEnvironmentOpt, id: string): Promise<AutomationEnvironment> {
     const {runMode, browserType, launchOpt, browserContext} = opt;
     prepareEnv(runMode || 'test');
     const browser = await playwright[browserType].launch(launchOpt);
@@ -21,7 +21,7 @@ export class AutomationEnvironment {
 
   constructor(public readonly id: string,
               public readonly browser: Browser,
-              public readonly opt: IAutomationEnvironmentOptions) {
+              public readonly opt: IAutomationEnvironmentOpt) {
     this.taskExecutor = new TaskExecutor(this);
     this.pngUtils = new PngUtils(this);
     this.storage = new opt.storage.variant(this);

@@ -1,8 +1,7 @@
-import {isNumber} from '@do-while-for-each/common'
-import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract'
+import {complementPath, isNumber} from '@do-while-for-each/common'
+import {IAutomationEnvironmentOpt, IStorage, ITask} from './contract'
 import {AutomationEnvironment} from './automation.environment'
 import {PngUtils} from './png.utils'
-import {joinUrl} from './common'
 
 export class TaskExecutor {
 
@@ -54,7 +53,7 @@ export class TaskExecutor {
           }
           case 'compareScreenshot': {
             checkFields(task, ['screenshot']);
-            if (this.options.screenshot.type !== 'png')
+            if (this.opt.screenshot.type !== 'png')
               throw new Error(`Поддерживается только 'png' при сравнении скриншотов`);
             const origImgBuf = this.storage.get(task, {type: 'screenshot'}).buf;
             const screenshot = await task.screenshot?.() as Buffer;
@@ -120,13 +119,13 @@ export class TaskExecutor {
   }
 
   private getUrl(path: string): string {
-    return joinUrl(path, this.options.baseUrl);
+    return complementPath(path, this.opt.urlOrigin);
   }
 
 
 //region Support
 
-  private get options(): IAutomationEnvironmentOptions {
+  private get opt(): IAutomationEnvironmentOpt {
     return this.env.opt;
   }
 
@@ -149,7 +148,7 @@ export class TaskExecutor {
     this.debug(`==================================================`);
     this.debug(`start ${task.id} for '${this.env.id}'`);
 
-    if (this.options.isDebug)
+    if (this.opt.isDebug)
       console.time(task.id);
   }
 
@@ -157,7 +156,7 @@ export class TaskExecutor {
     task.isActive = false;
     task.isFinished = true;
 
-    if (this.options.isDebug)
+    if (this.opt.isDebug)
       console.timeEnd(task.id);
   }
 

@@ -1,8 +1,8 @@
-import {Page, Request, Route} from 'playwright';
+import {pathStrFromUrlStr} from '@do-while-for-each/common'
 import fetch, {RequestInit, Response} from 'node-fetch';
+import {Page, Request, Route} from 'playwright';
 import {IInterception, IInterceptionInfo, IStorage, ITask, TInterceptionMatch} from './contract';
 import {AutomationEnvironment} from './automation.environment';
-import {getUrlPath} from './common';
 
 /**
  * Каждый из перехватов(match) по умолчанию отработает только один раз(onePass = true).
@@ -35,7 +35,7 @@ export class ReqInterceptor {
 
     return async (route: Route, req: Request) => {
       const url = req.url();
-      const key = getUrlPath(url);
+      const key = pathStrFromUrlStr(url);
       this.debug(` - перехват '${url}'`);
 
       const {status, body, contentType} = await this.getResponse(key, req);

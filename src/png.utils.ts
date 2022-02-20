@@ -1,9 +1,9 @@
 import {readFileSync, writeFileSync} from 'fs';
 import {PNG, PNGWithMetadata} from 'pngjs';
-import * as JPEG from 'jpeg-js';
 import {RawImageData} from 'jpeg-js';
 import pixelmatch from 'pixelmatch';
-import {defaultPixelmatchOptions, IAutomationEnvironmentOptions, IImgCompareResult} from './contract';
+import * as JPEG from 'jpeg-js';
+import {defaultPixelmatchOptions, IAutomationEnvironmentOpt, IImgCompareResult} from './contract';
 import {AutomationEnvironment} from './automation.environment';
 
 export class PngUtils {
@@ -26,7 +26,7 @@ export class PngUtils {
   compare(origImg: PNG, imgToCompare: PNG): IImgCompareResult {
     const {width, height} = origImg;
     const diffImg = new PNG({width, height});
-    const options = this.options.pixelmatch || defaultPixelmatchOptions;
+    const options = this.opt.pixelmatch || defaultPixelmatchOptions;
     const diffPixelsCount = pixelmatch(origImg.data, imgToCompare.data, diffImg.data, width, height, options);
     return {
       isEqual: diffPixelsCount === 0,
@@ -50,7 +50,7 @@ export class PngUtils {
 
 //region Support
 
-  private get options(): IAutomationEnvironmentOptions {
+  private get opt(): IAutomationEnvironmentOpt {
     return this.env.opt;
   }
 

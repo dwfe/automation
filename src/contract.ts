@@ -4,7 +4,7 @@ import {TPoint} from '@do-while-for-each/math'
 import {PixelmatchOptions} from 'pixelmatch'
 import {PNG} from 'pngjs'
 
-export interface IAutomationEnvironmentOptions {
+export interface IAutomationEnvironmentOpt {
   browserType: 'chromium' | 'webkit' | 'firefox';
   launchOpt: LaunchOptions;
   browserContext: BrowserContextOptions;
@@ -14,7 +14,7 @@ export interface IAutomationEnvironmentOptions {
     variant: Type<IStorage>;
     dir: string;    // главная папка хранилища
   },
-  baseUrl?: string; // используется там, где надо собрать url из относительного пути. Например, TaskExecutor при выполнении команды 'goto'
+  urlOrigin?: string; // используется там, где надо собрать url из относительного пути. Например, TaskExecutor при выполнении команды 'goto'
   isDebug?: boolean;
   isLeaveOpen?: {
     env?: boolean;           // флаг, надо ли закрыть окружение, когда у него будет вызван метод .close()
