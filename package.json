@@ -35,7 +35,7 @@
     "@do-while-for-each/math": "^1.0.27",
     "@do-while-for-each/rxjs": "^1.1.1",
     "@do-while-for-each/env": "^1.0.5",
-    "@do-while-for-each/fs": "^1.2.12",
+    "@do-while-for-each/fs": "^1.2.13",
     "jpeg-js": "0.4.3",
     "node-fetch": "2.6.7",
     "pixelmatch": "5.2.1",
