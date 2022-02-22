@@ -70,7 +70,7 @@ export class Storage implements IStorage {
   }
 
   private get dir() {
-    return this.options.storage.dir;
+    return this.opt.storage.dir;
   }
 
   private get environmentDir() {
@@ -97,7 +97,7 @@ export class Storage implements IStorage {
     let fileName, contentType, filePath;
     switch (meta.type) {
       case 'screenshot': {
-        const fileType = this.options.screenshot.type;
+        const fileType = this.opt.screenshot.type;
         fileName = task.id + '.' + fileType;
         contentType = `image/${fileType}`;
         filePath = join(this.storageFileTypeDir, fileName);
@@ -145,7 +145,7 @@ export class Storage implements IStorage {
 
 
 //region Clean
-
+// TODO перевести на fs
   clean() {
     this.debug('==================================================');
     this.debug(`clean storage`)
@@ -179,7 +179,7 @@ export class Storage implements IStorage {
 
 //region Support
 
-  private get options(): IAutomationEnvironmentOpt {
+  private get opt(): IAutomationEnvironmentOpt {
     return this.env.opt;
   }
 

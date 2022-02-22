@@ -31,7 +31,7 @@
     "deploy": "npm version patch && npm publish"
   },
   "dependencies": {
-    "@do-while-for-each/common": "^1.1.2",
+    "@do-while-for-each/common": "^1.2.4",
     "@do-while-for-each/math": "^1.0.27",
     "@do-while-for-each/rxjs": "^1.1.1",
     "@do-while-for-each/env": "^1.0.5",
@@ -39,7 +39,7 @@
     "jpeg-js": "0.4.3",
     "node-fetch": "2.6.7",
     "pixelmatch": "5.2.1",
-    "playwright": "1.9.1"
+    "playwright": "1.19.1"
   },
   "devDependencies": {
     "@do-while-for-each/tsconfig": "^1.0.3",

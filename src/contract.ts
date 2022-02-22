@@ -1,5 +1,6 @@
 import {BrowserContextOptions, LaunchOptions, Mouse, Page} from 'playwright'
 import {IStoppable, TRunMode, Type} from '@do-while-for-each/common'
+import {PageScreenshotOptions} from 'playwright-core'
 import {TPoint} from '@do-while-for-each/math'
 import {PixelmatchOptions} from 'pixelmatch'
 import {PNG} from 'pngjs'
@@ -8,7 +9,7 @@ export interface IAutomationEnvironmentOpt {
   browserType: 'chromium' | 'webkit' | 'firefox';
   launchOpt: LaunchOptions;
   browserContext: BrowserContextOptions;
-  screenshot: NonNullable<Parameters<Page['screenshot']>[0]>;
+  screenshot: NonNullable<PageScreenshotOptions>;
   pixelmatch: PixelmatchOptions;
   storage: {
     variant: Type<IStorage>;
