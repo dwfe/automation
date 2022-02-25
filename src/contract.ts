@@ -139,38 +139,38 @@ export type TCommand =
   ILoginCommand;
 
 export interface IScreenshotCommand {
-  type: 'screenshot';
+  cmd: 'screenshot';
   data: { save?: boolean; }
 }
 
 export interface ICompareScreenshotCommand {
-  type: 'compareScreenshot';
+  cmd: 'compareScreenshot';
 }
 
 export interface IGotoCommand {
-  type: 'goto';
+  cmd: 'goto';
   data: string;
 }
 
 export interface INewPageCommand {
-  type: 'newPage';
+  cmd: 'newPage';
 }
 
 export interface IClosePageCommand {
-  type: 'closePage';
+  cmd: 'closePage';
 }
 
 export interface IWaitCommand {
-  type: 'wait';
+  cmd: 'wait';
   data?: number;
 }
 
 export interface IWaitForAllDataReceivedCommand {
-  type: 'waitForAllDataReceived';
+  cmd: 'waitForAllDataReceived';
 }
 
 export interface IClickElementCommand {
-  type: 'click';
+  cmd: 'click';
   data: {
     selector: string;
     options?: Parameters<Page['click']>[1];
@@ -179,7 +179,7 @@ export interface IClickElementCommand {
 }
 
 export interface IFillCommand {
-  type: 'fill';
+  cmd: 'fill';
   data: {
     selector: string;
     value: string;
@@ -189,7 +189,7 @@ export interface IFillCommand {
 }
 
 export interface IMouseClickCommand {
-  type: 'mouseClick';
+  cmd: 'mouseClick';
   data: {
     point: TPoint;
     options?: Parameters<Mouse['click']>[2];
@@ -197,52 +197,52 @@ export interface IMouseClickCommand {
 }
 
 export interface ILoginCommand {
-  type: 'login';
+  cmd: 'login';
 }
 
 export class Command {
   static screenshot(data: IScreenshotCommand['data'] = {}): IScreenshotCommand {
-    return {type: 'screenshot', data};
+    return {cmd: 'screenshot', data};
   }
 
   static get compareScreenshot(): ICompareScreenshotCommand {
-    return {type: 'compareScreenshot'};
+    return {cmd: 'compareScreenshot'};
   }
 
   static get newPage(): INewPageCommand {
-    return {type: 'newPage'};
+    return {cmd: 'newPage'};
   }
 
   static get closePage(): IClosePageCommand {
-    return {type: 'closePage'};
+    return {cmd: 'closePage'};
   }
 
   static goto(data: IGotoCommand['data']): IGotoCommand {
-    return {type: 'goto', data};
+    return {cmd: 'goto', data};
   }
 
   static wait(data: IWaitCommand['data']): IWaitCommand {
-    return {type: 'wait', data};
+    return {cmd: 'wait', data};
   }
 
   static get waitForAllDataReceived(): IWaitForAllDataReceivedCommand {
-    return {type: 'waitForAllDataReceived'};
+    return {cmd: 'waitForAllDataReceived'};
   }
 
   static click(data: IClickElementCommand['data']): IClickElementCommand {
-    return {type: 'click', data};
+    return {cmd: 'click', data};
   }
 
   static fill(data: IFillCommand['data']): IFillCommand {
-    return {type: 'fill', data};
+    return {cmd: 'fill', data};
   }
 
   static mouseClick(data: IMouseClickCommand['data']): IMouseClickCommand {
-    return {type: 'mouseClick', data};
+    return {cmd: 'mouseClick', data};
   }
 
   static get login(): ILoginCommand {
-    return {type: 'login'};
+    return {cmd: 'login'};
   }
 
 }

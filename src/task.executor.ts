@@ -25,7 +25,7 @@ export class TaskExecutor {
       this.debug(command);
       const page = task.page;
       try {
-        switch (command.type) {
+        switch (command.cmd) {
           case 'newPage': {
             task.page = await this.env.newPage();
             task.initReqInterceptors?.();
