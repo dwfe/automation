@@ -2,8 +2,14 @@
   "name": "@do-while-for-each/automation",
   "description": "Cross-browser web automation",
   "version": "1.0.4",
-  "main": "dist/cjs/index.js",
-  "types": "dist/types/index.d.ts",
+  "exports": "./dist/cjs/index.js",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/types/*"
+      ]
+    }
+  },
   "homepage": "https://github.com/dwfe/automation",
   "bugs": "https://github.com/dwfe/automation/issues",
   "repository": {
@@ -22,20 +28,12 @@
     "LICENSE",
     "README.md"
   ],
-  "scripts": {
-    "clean": "dwfeFs cleanDir . --noConfirm --fileNames=\"dist;node_modules;package-lock.json\"",
-    "build": "dwfeFs rmForce dist --noConfirm && tsc -b src/tsconfig.json",
-    "types": "tsc -b config/tsconfig.types.json",
-    "version": "npm run build && npm run types",
-    "postversion": "git push",
-    "deploy": "npm version patch && npm publish"
-  },
   "dependencies": {
-    "@do-while-for-each/common": "^1.2.6",
+    "@do-while-for-each/common": "^1.2.13",
     "@do-while-for-each/math": "^1.0.27",
     "@do-while-for-each/rxjs": "^1.1.1",
     "@do-while-for-each/env": "^1.0.5",
-    "@do-while-for-each/fs": "^1.2.15",
+    "@do-while-for-each/fs": "^1.2.17",
     "jpeg-js": "0.4.3",
     "node-fetch": "2.6.7",
     "pixelmatch": "5.2.1",
@@ -47,6 +45,14 @@
     "@types/node-fetch": "2.5.12",
     "@types/pixelmatch": "5.2.4",
     "@types/pngjs": "3.4.2"
+  },
+  "scripts": {
+    "clean": "dwfeFs cleanDir . --fileNames=\"dist;node_modules;package-lock.json\"",
+    "build": "dwfeFs rmForce dist --noConfirm && tsc -b src/tsconfig.json",
+    "types": "tsc -b config/tsconfig.types.json",
+    "version": "npm run build && npm run types",
+    "postversion": "git push",
+    "deploy": "npm version patch && npm publish"
   },
   "publishConfig": {
     "access": "public"
