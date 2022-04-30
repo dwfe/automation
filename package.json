@@ -29,11 +29,11 @@
     "README.md"
   ],
   "dependencies": {
-    "@do-while-for-each/common": "^1.2.13",
-    "@do-while-for-each/math": "^1.0.27",
-    "@do-while-for-each/rxjs": "^1.1.1",
-    "@do-while-for-each/env": "^1.0.5",
-    "@do-while-for-each/fs": "^1.2.17",
+    "@do-while-for-each/common": "^1.2.14",
+    "@do-while-for-each/math": "^1.0.28",
+    "@do-while-for-each/rxjs": "^1.1.2",
+    "@do-while-for-each/env": "^1.0.6",
+    "@do-while-for-each/fs": "^1.2.18",
     "jpeg-js": "0.4.3",
     "node-fetch": "2.6.7",
     "pixelmatch": "5.2.1",
