@@ -62,20 +62,20 @@ export interface ITask extends Partial<IStoppable> {
 
   page?: Page; // страница, на которой выполняется задача
 
+  allDataReceived?: () => Promise<any>; // сигнализирует, что пришли все данные, которые ожидалось получить
+  setAllDataReceived?: () => void;
+  initReqInterceptors?: () => void;
+
+  screenshot?: () => Promise<Buffer>;
+  setScreenshot?: (buf: Buffer) => void;
+  actionsBeforeScreenshot?: () => Promise<void>;
+
+  compareScreenshotResult?: () => Promise<IImgCompareResult>;
+  setCompareScreenshotResult?: (result: IImgCompareResult) => void;
+
   saveResponses?: boolean; // флаг, надо ли сохранять ответ сервера (потом может быть использован как mock-данные)
   mockResponses?: boolean; // флаг, надо ли вместо прямого обращения к серверу брать ответ из mock-данных
   delayForDraw?: number;
-
-  initReqInterceptors?: () => void;
-  setAllDataReceived?: () => void;
-  allDataReceived?: () => Promise<any>; // сигнализирует, что пришли все данные, которые ожидалось получить
-
-  actionsBeforeScreenshot?: () => Promise<void>;
-  setScreenshot?: (buf: Buffer) => void;
-  screenshot?: () => Promise<Buffer>;
-
-  setCompareScreenshotResult?: (result: IImgCompareResult) => void;
-  compareScreenshotResult?: () => Promise<IImgCompareResult>;
 
   login?: () => Promise<TToken>;
 

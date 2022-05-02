@@ -1,12 +1,12 @@
-import {filter, firstValueFrom, Subj} from '@do-while-for-each/rxjs';
+import {Subj} from '@do-while-for-each/rxjs';
 import {Page} from 'playwright';
 import {IImgCompareResult, ITask, TCommand} from './contract';
 
 export abstract class AbstractTask implements ITask {
 
-  private allDataReceivedWrap = new Subj<any>({type: 'shareReplay', bufferSize: 1, initValue: null});
-  private screenshotWrap = new Subj<Buffer | null>({type: 'shareReplay', bufferSize: 1, initValue: null});
-  private compareScreenshotWrap = new Subj<IImgCompareResult | null>({type: 'shareReplay', bufferSize: 1, initValue: null});
+  private allDataReceivedSubj = new Subj<any>({type: 'share', initValue: null});
+  private screenshotSubj = new Subj<Buffer | null>({type: 'share', initValue: null});
+  private compareScreenshotSubj = new Subj<IImgCompareResult | null>({type: 'share', initValue: null});
 
   constructor(public readonly id: string) {
   }
@@ -15,41 +15,23 @@ export abstract class AbstractTask implements ITask {
 
   page!: Page;
 
-  setAllDataReceived() {
-    this.allDataReceivedWrap.setValue(true);
-  }
+  allDataReceived = (): Promise<any> => result(this.allDataReceivedSubj);
+  setAllDataReceived = (): void => this.allDataReceivedSubj.setValue(true);
 
-  allDataReceived(): Promise<any> {
-    return result(this.allDataReceivedWrap);
-  }
+  screenshot = (): Promise<Buffer> => result(this.screenshotSubj) as Promise<Buffer>;
+  setScreenshot = (buf: Buffer): void => this.screenshotSubj.setValue(buf);
 
-  setScreenshot(buf: Buffer) {
-    this.screenshotWrap.setValue(buf);
-  }
-
-  screenshot(): Promise<Buffer> {
-    return result(this.screenshotWrap) as Promise<Buffer>;
-  }
-
-  setCompareScreenshotResult(result: IImgCompareResult) {
-    this.compareScreenshotWrap.setValue(result);
-  }
-
-  compareScreenshotResult(): Promise<IImgCompareResult> {
-    return result(this.compareScreenshotWrap) as Promise<IImgCompareResult>;
-  }
+  compareScreenshotResult = (): Promise<IImgCompareResult> => result(this.compareScreenshotSubj) as Promise<IImgCompareResult>;
+  setCompareScreenshotResult = (result: IImgCompareResult): void => this.compareScreenshotSubj.setValue(result);
 
   stop(): void {
-    this.allDataReceivedWrap.stop()
-    this.screenshotWrap.stop()
-    this.compareScreenshotWrap.stop()
+    this.allDataReceivedSubj.stop()
+    this.screenshotSubj.stop()
+    this.compareScreenshotSubj.stop()
   }
 
 }
 
-const result = async <T>({lastValue, value$}: Subj<T>): Promise<T> =>
-    lastValue
-    || firstValueFrom(value$.pipe(
-      filter(data => !!data),
-    ))
+const result = async <T>({lastValue, existedValuePromise}: Subj<T>): Promise<T> =>
+  lastValue || existedValuePromise()
 ;
