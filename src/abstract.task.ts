@@ -15,13 +15,13 @@ export abstract class AbstractTask implements ITask {
 
   page!: Page;
 
-  allDataReceived = (): Promise<any> => result(this.allDataReceivedSubj);
+  allDataReceived = () => result(this.allDataReceivedSubj);
   setAllDataReceived = (): void => this.allDataReceivedSubj.setValue(true);
 
-  screenshot = (): Promise<Buffer> => result(this.screenshotSubj) as Promise<Buffer>;
+  screenshot = () => result(this.screenshotSubj);
   setScreenshot = (buf: Buffer): void => this.screenshotSubj.setValue(buf);
 
-  compareScreenshotResult = (): Promise<IImgCompareResult> => result(this.compareScreenshotSubj) as Promise<IImgCompareResult>;
+  compareScreenshotResult = () => result(this.compareScreenshotSubj);
   setCompareScreenshotResult = (result: IImgCompareResult): void => this.compareScreenshotSubj.setValue(result);
 
   stop(): void {
@@ -32,6 +32,6 @@ export abstract class AbstractTask implements ITask {
 
 }
 
-const result = async <T>({lastValue, existedValuePromise}: Subj<T>): Promise<T> =>
-  lastValue || existedValuePromise()
+const result = async <T>({lastValue, nonNullableValuePromise}: Subj<T>): Promise<NonNullable<T>> =>
+  lastValue ?? nonNullableValuePromise()
 ;

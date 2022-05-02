@@ -31,7 +31,7 @@
   "dependencies": {
     "@do-while-for-each/common": "^1.2.14",
     "@do-while-for-each/math": "^1.0.28",
-    "@do-while-for-each/rxjs": "^1.1.4",
+    "@do-while-for-each/rxjs": "^1.1.5",
     "@do-while-for-each/env": "^1.0.6",
     "@do-while-for-each/fs": "^1.2.18",
     "jpeg-js": "0.4.3",
