@@ -3,6 +3,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-    "outDir": "../dist/cjs"
+    "outDir": "../dist/cjs",
+    "declarationDir": "../dist/types",
+    "declaration": true,
+    "declarationMap": true
   }
 }

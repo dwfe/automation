@@ -1,8 +1,9 @@
 import {Subj} from '@do-while-for-each/rxjs';
 import {Page} from 'playwright';
-import {IImgCompareResult, ITask, TCommand} from './contract';
+import {IImgCompareResult, ITask} from './task'
+import {TCommand} from './cmd'
 
-export abstract class AbstractTask implements ITask {
+export abstract class TaskAbstract implements ITask {
 
   private allDataReceivedSubj = new Subj<any>({type: 'share', initValue: null});
   private screenshotSubj = new Subj<Buffer | null>({type: 'share', initValue: null});

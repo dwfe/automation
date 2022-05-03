@@ -1,7 +1,7 @@
 import {lstatSync, readdirSync, readFileSync, unlinkSync, writeFileSync} from 'fs';
 import {ensureDirExists, FileJson} from '@do-while-for-each/fs';
 import {join} from 'path';
-import {IAutomationEnvironmentOpt, IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue, ITask} from './contract';
+import {IAutomationEnvironmentOpt, IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue, ITask} from './contract'
 import {AutomationEnvironment} from './automation.environment';
 
 /**

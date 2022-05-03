@@ -1,7 +1,7 @@
 import * as playwright from 'playwright';
 import {Browser, BrowserContext, Page} from 'playwright';
 import {prepareEnv} from '@do-while-for-each/env';
-import {IAutomationEnvironmentOpt, IStorage, ITask} from './contract';
+import {IAutomationEnvironmentOpt, IStorage, ITask} from './contract'
 import {TaskExecutor} from './task.executor';
 import {PngUtils} from './png.utils';
 

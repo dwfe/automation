@@ -1,9 +1,0 @@
-{
-  "extends": "@do-while-for-each/tsconfig/tsconfig.types.json",
-  "compilerOptions": {
-    "declarationDir": "../dist/types",
-  },
-  "include": [
-    "../src/**/*"
-  ]
-}

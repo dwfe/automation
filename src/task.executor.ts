@@ -93,7 +93,9 @@ export class TaskExecutor {
           }
           case 'login': {
             checkFields(task, ['login']);
-            await task.login?.();
+            const isLoggedIn = await task.login?.();
+            if (!isLoggedIn)
+              throw new Error('Failed authorization');
             break;
           }
           default:
@@ -102,7 +104,7 @@ export class TaskExecutor {
       } catch (e) {
         this.finishTask(task);
         console.log(`---`,);
-        console.log(`Ошибка при выполнении задачи '${task.id}'`);
+        console.log(`Ошибка при выполнении задачи '${task.id}'`, e);
         console.log(script);
         throw e;
       }

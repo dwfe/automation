@@ -1,7 +1,7 @@
-import {pathStrFromUrlStr} from '@do-while-for-each/common'
+import {pathStrFromUrlStr} from '@do-while-for-each/common';
 import fetch, {RequestInit, Response} from 'node-fetch';
 import {Page, Request, Route} from 'playwright';
-import {IInterception, IInterceptionInfo, IStorage, ITask, TInterceptionMatch} from './contract';
+import {IInterception, IInterceptionInfo, IStorage, ITask, TInterceptionMatch} from './contract'
 import {AutomationEnvironment} from './automation.environment';
 
 /**

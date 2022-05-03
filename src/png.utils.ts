@@ -3,7 +3,7 @@ import {PNG, PNGWithMetadata} from 'pngjs';
 import * as JPEG from 'jpeg-js';
 import {RawImageData} from 'jpeg-js';
 import pixelmatch from 'pixelmatch';
-import {defaultPixelmatchOptions, IAutomationEnvironmentOpt, IImgCompareResult} from './contract';
+import {defaultPixelmatchOptions, IAutomationEnvironmentOpt, IImgCompareResult} from './contract'
 import {AutomationEnvironment} from './automation.environment';
 
 export class PngUtils {
