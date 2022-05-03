@@ -1,8 +1,9 @@
 import {complementPath, isNumber} from '@do-while-for-each/common'
 import {Page} from 'playwright'
-import {IAutomationEnvironmentOpt, IStorage, ITask} from './contract'
-import {AutomationEnvironment} from './automation.environment'
-import {PngUtils} from './png.utils'
+import {AutomationEnvironment, IAutomationEnvironmentOpt} from '../env'
+import {ITask} from './task.contract'
+import {PngUtil} from '../png.util'
+import {IStorage} from '../storage'
 
 export class TaskExecutor {
 
@@ -58,7 +59,7 @@ export class TaskExecutor {
               throw new Error(`Поддерживается только 'png' при сравнении скриншотов`);
             const origImgBuf = this.storage.get(task, {type: 'screenshot'}).buf;
             const screenshot = await task.screenshot?.() as Buffer;
-            const compareResult = this.pngUtils.compareBuf(origImgBuf, screenshot);
+            const compareResult = this.pngUtil.compareBuf(origImgBuf, screenshot);
             task.setCompareScreenshotResult?.(compareResult);
             break;
           }
@@ -136,7 +137,7 @@ export class TaskExecutor {
     return this.env.storage;
   }
 
-  private get pngUtils(): PngUtils {
+  private get pngUtil(): PngUtil {
     return this.env.pngUtils;
   }
 

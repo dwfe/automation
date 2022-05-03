@@ -1,8 +1,10 @@
 import {pathStrFromUrlStr} from '@do-while-for-each/common';
 import fetch, {RequestInit, Response} from 'node-fetch';
 import {Page, Request, Route} from 'playwright';
-import {IInterception, IInterceptionInfo, IStorage, ITask, TInterceptionMatch} from './contract'
-import {AutomationEnvironment} from './automation.environment';
+import {IInterception, IInterceptionInfo, IResponse, TInterceptionMatch} from './interceptor.contract'
+import {AutomationEnvironment} from '../env';
+import {IStorage} from '../storage'
+import {ITask} from '../task'
 
 /**
  * Каждый из перехватов(match) по умолчанию отработает только один раз(onePass = true).
@@ -14,7 +16,7 @@ import {AutomationEnvironment} from './automation.environment';
  *       - и при необходимости сохранен в хранилище
  *   .) либо mock
  */
-export class ReqInterceptor {
+export class InterceptorRequest {
 
   private interceptions = new Map<string, IInterceptionInfo>();
 
@@ -148,11 +150,4 @@ export class ReqInterceptor {
 
 //endregion
 
-}
-
-
-interface IResponse {
-  status: number;
-  body: Buffer; // тело ответа
-  contentType: string;
 }

@@ -2,7 +2,7 @@ import {BrowserContextOptions, LaunchOptions} from 'playwright'
 import {TRunMode, Type} from '@do-while-for-each/common'
 import {PageScreenshotOptions} from 'playwright-core'
 import {PixelmatchOptions} from 'pixelmatch'
-import {IStorage} from './storage'
+import {IStorage} from '../storage'
 
 export interface IAutomationEnvironmentOpt {
   browserType: 'chromium' | 'webkit' | 'firefox';

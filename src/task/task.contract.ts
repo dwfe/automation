@@ -1,6 +1,7 @@
+import {IStoppable} from '@do-while-for-each/common'
 import {Page} from 'playwright'
 import {PNG} from 'pngjs'
-import {TCommand} from './cmd'
+import {TCommand} from '../cmd'
 
 /**
  * Задача - это одна или несколько команд, которые надо выполнить, чтобы получить результат.

@@ -1,4 +1,4 @@
-import {ITask} from './task'
+import {ITask} from '../task'
 
 export interface IStorage {
 

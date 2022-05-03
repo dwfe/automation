@@ -1,9 +1,10 @@
+import {prepareEnv} from '@do-while-for-each/env';
 import * as playwright from 'playwright';
 import {Browser, BrowserContext, Page} from 'playwright';
-import {prepareEnv} from '@do-while-for-each/env';
-import {IAutomationEnvironmentOpt, IStorage, ITask} from './contract'
-import {TaskExecutor} from './task.executor';
-import {PngUtils} from './png.utils';
+import {IAutomationEnvironmentOpt} from './env.contract'
+import {ITask, TaskExecutor} from '../task';
+import {PngUtil} from '../png.util';
+import {IStorage} from '../storage'
 
 export class AutomationEnvironment {
 
@@ -16,14 +17,14 @@ export class AutomationEnvironment {
   }
 
   readonly taskExecutor: TaskExecutor;
-  readonly pngUtils: PngUtils;
+  readonly pngUtils: PngUtil;
   readonly storage: IStorage;
 
   constructor(public readonly id: string,
               public readonly browser: Browser,
               public readonly opt: IAutomationEnvironmentOpt) {
     this.taskExecutor = new TaskExecutor(this);
-    this.pngUtils = new PngUtils(this);
+    this.pngUtils = new PngUtil(this);
     this.storage = new opt.storage.variant(this);
   }
 

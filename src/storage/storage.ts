@@ -1,8 +1,9 @@
 import {lstatSync, readdirSync, readFileSync, unlinkSync, writeFileSync} from 'fs';
 import {ensureDirExists, FileJson} from '@do-while-for-each/fs';
 import {join} from 'path';
-import {IAutomationEnvironmentOpt, IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue, ITask} from './contract'
-import {AutomationEnvironment} from './automation.environment';
+import {IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue} from './storage.contract'
+import {AutomationEnvironment, IAutomationEnvironmentOpt} from '../env';
+import {ITask} from '../task'
 
 /**
  * Хранилище реализует структуру вида:
@@ -106,7 +107,7 @@ export class Storage implements IStorage {
       case 'response': {
         if (action === 'set') {
           contentType = meta.contentType as string;
-          fileName = `${Math.random().toString(36).substr(2, 8)}${getFileExtention(contentType)}`;
+          fileName = `${Math.random().toString(36).substr(2, 8)}${getFileExt(contentType)}`;
         } else if (meta.key) {
           const index = this.currentIndex[meta.key];
           if (index === undefined)
@@ -191,7 +192,7 @@ export class Storage implements IStorage {
 
 }
 
-const getFileExtention = (contentType: string): string => {
+const getFileExt = (contentType: string): string => {
   if (!contentType)
     return '';
 

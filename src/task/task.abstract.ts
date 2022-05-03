@@ -1,7 +1,7 @@
 import {Subj} from '@do-while-for-each/rxjs';
 import {Page} from 'playwright';
-import {IImgCompareResult, ITask} from './task'
-import {TCommand} from './cmd'
+import {IImgCompareResult, ITask} from './task.contract'
+import {TCommand} from '../cmd'
 
 export abstract class TaskAbstract implements ITask {
 

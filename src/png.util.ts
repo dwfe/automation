@@ -3,10 +3,11 @@ import {PNG, PNGWithMetadata} from 'pngjs';
 import * as JPEG from 'jpeg-js';
 import {RawImageData} from 'jpeg-js';
 import pixelmatch from 'pixelmatch';
-import {defaultPixelmatchOptions, IAutomationEnvironmentOpt, IImgCompareResult} from './contract'
-import {AutomationEnvironment} from './automation.environment';
+import {AutomationEnvironment, IAutomationEnvironmentOpt} from './env';
+import {defaultPixelmatchOptions} from './default'
+import {IImgCompareResult} from './task'
 
-export class PngUtils {
+export class PngUtil {
 
   constructor(public env: AutomationEnvironment) {
   }

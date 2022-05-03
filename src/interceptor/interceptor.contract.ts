@@ -14,3 +14,9 @@ export interface IInterceptionInfo {
   timeout?: NodeJS.Timeout;
   completed?: boolean;
 }
+
+export interface IResponse {
+  status: number;
+  body: Buffer; // тело ответа
+  contentType: string;
+}
