@@ -61,14 +61,14 @@ export interface ITask extends Partial<IStoppable> {
   afterScript?: TCommand[];
 
   page?: Page; // страница, на которой выполняется задача
+  afterPage?: () => Promise<void>;
 
   allDataReceived?: () => Promise<any>; // сигнализирует, что пришли все данные, которые ожидалось получить
   setAllDataReceived?: () => void;
-  initReqInterceptors?: () => void;
 
   screenshot?: () => Promise<Buffer>;
   setScreenshot?: (buf: Buffer) => void;
-  actionsBeforeScreenshot?: () => Promise<void>;
+  beforeScreenshot?: () => Promise<void>;
 
   compareScreenshotResult?: () => Promise<IImgCompareResult>;
   setCompareScreenshotResult?: (result: IImgCompareResult) => void;

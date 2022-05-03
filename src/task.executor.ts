@@ -1,4 +1,5 @@
 import {complementPath, isNumber} from '@do-while-for-each/common'
+import {Page} from 'playwright'
 import {IAutomationEnvironmentOpt, IStorage, ITask} from './contract'
 import {AutomationEnvironment} from './automation.environment'
 import {PngUtils} from './png.utils'
@@ -23,29 +24,29 @@ export class TaskExecutor {
 
     for (const command of script) {
       this.debug(command);
-      const page = task.page;
+      const page = task.page as Page;
       try {
         switch (command.cmd) {
           case 'newPage': {
             task.page = await this.env.newPage();
-            task.initReqInterceptors?.();
+            await task.afterPage?.();
             break;
           }
           case 'closePage': {
             checkFields(task, ['page']);
-            page?.close();
+            page.close();
             delete task.page;
             break;
           }
           case 'goto': {
             checkFields(task, ['page']);
-            await page?.goto(this.getUrl(command.data));
+            await page.goto(this.getUrl(command.data));
             break;
           }
           case 'screenshot': {
-            checkFields(task, ['page', 'actionsBeforeScreenshot']);
-            await task.actionsBeforeScreenshot?.();
-            const buf = await page?.screenshot() as Buffer;
+            checkFields(task, ['page', 'beforeScreenshot']);
+            await task.beforeScreenshot?.();
+            const buf = await page.screenshot();
             task.setScreenshot?.(buf);
             if (command.data.save)
               this.storage.set(task, {type: 'screenshot'}, buf);
@@ -64,7 +65,7 @@ export class TaskExecutor {
           case 'wait': {
             checkFields(task, ['page']);
             if (isNumber(command.data))
-              await page?.waitForTimeout(command.data as number);
+              await page.waitForTimeout(command.data as number);
             break;
           }
           case 'waitForAllDataReceived': {
@@ -75,19 +76,19 @@ export class TaskExecutor {
           case 'click': {
             checkFields(task, ['page']);
             const {selector, options, useFullSelector} = command.data;
-            await page?.click(this.getSelector(selector, useFullSelector), options);
+            await page.click(this.getSelector(selector, useFullSelector), options);
             break;
           }
           case 'fill': {
             checkFields(task, ['page']);
             const {selector, value, options, useFullSelector} = command.data;
-            await page?.fill(this.getSelector(selector, useFullSelector), value, options);
+            await page.fill(this.getSelector(selector, useFullSelector), value, options);
             break;
           }
           case 'mouseClick': {
             checkFields(task, ['page']);
             const {point, options} = command.data;
-            await page?.mouse.click(point[0], point[1], options);
+            await page.mouse.click(point[0], point[1], options);
             break;
           }
           case 'login': {
