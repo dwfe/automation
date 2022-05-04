@@ -2,9 +2,9 @@ import {pathStrFromUrlStr} from '@do-while-for-each/common';
 import fetch, {RequestInit, Response} from 'node-fetch';
 import {Page, Request, Route} from 'playwright';
 import {IInterception, IInterceptionInfo, IResponse, TInterceptionMatch} from './interceptor.contract'
-import {AutomationEnvironment} from '../env';
 import {IStorage} from '../storage'
 import {ITask} from '../task'
+import {Env} from '../env';
 
 /**
  * Каждый из перехватов(match) по умолчанию отработает только один раз(onePass = true).
@@ -21,7 +21,7 @@ export class InterceptorRequest {
   private interceptions = new Map<string, IInterceptionInfo>();
 
   constructor(private task: ITask,
-              private env: AutomationEnvironment,
+              private env: Env,
               private onePass = true) {
   }
 
@@ -33,23 +33,23 @@ export class InterceptorRequest {
   }
 
   private getInterceptor(match: TInterceptionMatch) {
-    this.debug(`listen '${match}'`);
+    this.log(`listen '${match}'`);
 
     return async (route: Route, req: Request) => {
       const url = req.url();
       const key = pathStrFromUrlStr(url);
-      this.debug(` - перехват '${url}'`);
+      this.log(` - перехват '${url}'`);
 
       const {status, body, contentType} = await this.getResponse(key, req);
       this.saveResponse(key, body, contentType);
 
       if (!this.page) {
-        this.debug(` - ignore interception '${this.task.id}' because the page is closed`);
+        this.log(` - ignore interception '${this.task.id}' because the page is closed`);
         return;
       }
 
       route.fulfill({status, body, contentType});
-      this.debug(` - отдал ответ браузеру`);
+      this.log(` - отдал ответ браузеру`);
 
       if (this.onePass)
         this.setCompleted(match);
@@ -64,7 +64,7 @@ export class InterceptorRequest {
 
   private async getMock(key: string): Promise<IResponse> {
     const {buf, contentType} = this.storage.get(this.task, {type: 'response', key});
-    this.debug(` - считан mock, size`, buf.length);
+    this.log(` - считан mock, size`, buf.length);
     return {
       status: 200,
       body: buf,
@@ -73,14 +73,14 @@ export class InterceptorRequest {
   }
 
   private async requestToServer(req: Request): Promise<IResponse> {
-    this.debug(` - ${req.method()} ${req.url()}`);
+    this.log(` - ${req.method()} ${req.url()}`);
     const res: Response = await fetch(req.url(), {
       method: req.method(),
       headers: req.headers(),
       body: req.postData() as RequestInit['body'],
     });
     const buf = await res.buffer();
-    this.debug(` - ответ сервера, size`, buf.length);
+    this.log(` - ответ сервера, size`, buf.length);
     return {
       status: res.status,
       body: buf,
@@ -119,14 +119,14 @@ export class InterceptorRequest {
   private completeInterception(match: TInterceptionMatch, info: IInterceptionInfo) {
     info.completed = true;
     this.page.unroute(match);
-    this.debug(`stop listen '${match}'`);
+    this.log(`stop listen '${match}'`);
     this.checkAllDataReceived();
   }
 
   private checkAllDataReceived() {
     const incomplete = Array.from(this.interceptions.values()).filter(info => !info.completed);
     if (incomplete.length === 0) {
-      this.debug(` - все данные получены`);
+      this.log(` - все данные получены`);
       this.task.setAllDataReceived?.();
     }
   }
@@ -144,8 +144,8 @@ export class InterceptorRequest {
     return this.env.storage
   }
 
-  private debug(...args: any[]) {
-    return this.env.debug(...args);
+  private log(...args: any[]) {
+    return this.env.log(...args);
   }
 
 //endregion

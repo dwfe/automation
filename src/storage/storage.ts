@@ -2,7 +2,7 @@ import {lstatSync, readdirSync, readFileSync, unlinkSync, writeFileSync} from 'f
 import {ensureDirExists, FileJson} from '@do-while-for-each/fs';
 import {join} from 'path';
 import {IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue} from './storage.contract'
-import {AutomationEnvironment, IAutomationEnvironmentOpt} from '../env';
+import {Env, IEnvOpt} from '../env';
 import {ITask} from '../task'
 
 /**
@@ -30,7 +30,7 @@ import {ITask} from '../task'
  */
 export class Storage implements IStorage {
 
-  constructor(private env: AutomationEnvironment) {
+  constructor(private env: Env) {
     this.initDirs();
     this.clean();
   }
@@ -39,7 +39,7 @@ export class Storage implements IStorage {
     this.updatePosition(task, meta);
     const {filePath, contentType} = this.file('get', task, meta);
     const buf = readFileSync(filePath);
-    this.debug(`read ${meta.type} '${filePath}', size`, buf.length);
+    this.log(`read ${meta.type} '${filePath}', size`, buf.length);
     return {buf, contentType};
   }
 
@@ -48,7 +48,7 @@ export class Storage implements IStorage {
     const {filePath, fileName, contentType} = this.file('set', task, meta);
     writeFileSync(filePath, buf);
     this.updateIndex(meta, {fileName, contentType});
-    this.debug(`write ${meta.type} '${filePath}', size`, buf.length);
+    this.log(`write ${meta.type} '${filePath}', size`, buf.length);
   }
 
 //region Структура хранилища
@@ -148,8 +148,8 @@ export class Storage implements IStorage {
 //region Clean
 // TODO перевести на fs
   clean() {
-    this.debug('==================================================');
-    this.debug(`clean storage`)
+    this.log('==================================================');
+    this.log(`clean storage`)
     this.cleanDir(this.dir);
   }
 
@@ -165,12 +165,12 @@ export class Storage implements IStorage {
   }
 
   private removeFiles(dir: string, index: IStorageIndex, allDirFileNames: string[]) {
-    this.debug(dir);
+    this.log(dir);
     const indexFileNames = Object.values(index).map(value => value.fileName);
     allDirFileNames
       .filter(fileName => !indexFileNames.includes(fileName) && fileName !== this.indexFileName)
       .forEach(fileName => {
-        this.debug(` - remove file '${fileName}'`)
+        this.log(` - remove file '${fileName}'`)
         unlinkSync(join(dir, fileName));
       });
   }
@@ -180,12 +180,12 @@ export class Storage implements IStorage {
 
 //region Support
 
-  private get opt(): IAutomationEnvironmentOpt {
+  private get opt(): IEnvOpt {
     return this.env.opt;
   }
 
-  private debug(...args: any[]) {
-    return this.env.debug(...args);
+  private log(...args: any[]) {
+    return this.env.log(...args);
   }
 
 //endregion

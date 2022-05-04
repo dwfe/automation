@@ -1,13 +1,13 @@
 import {complementPath, isNumber} from '@do-while-for-each/common'
 import {Page} from 'playwright'
-import {AutomationEnvironment, IAutomationEnvironmentOpt} from '../env'
 import {ITask} from './task.contract'
-import {PngUtil} from '../png.util'
+import {Env, IEnvOpt} from '../env'
 import {IStorage} from '../storage'
+import {PngUtil} from '../png.util'
 
 export class TaskExecutor {
 
-  constructor(private env: AutomationEnvironment) {
+  constructor(private env: Env) {
   }
 
   async run(tasks: ITask[]) {
@@ -24,7 +24,7 @@ export class TaskExecutor {
     ];
 
     for (const command of script) {
-      this.debug(command);
+      this.log(command);
       const page = task.page as Page;
       try {
         switch (command.cmd) {
@@ -129,7 +129,7 @@ export class TaskExecutor {
 
 //region Support
 
-  private get opt(): IAutomationEnvironmentOpt {
+  private get opt(): IEnvOpt {
     return this.env.opt;
   }
 
@@ -141,16 +141,16 @@ export class TaskExecutor {
     return this.env.pngUtils;
   }
 
-  private debug(...args: any[]) {
-    return this.env.debug(...args);
+  private log(...args: any[]) {
+    return this.env.log(...args);
   }
 
 
   private startTask(task: ITask) {
     task.isActive = true;
 
-    this.debug(`==================================================`);
-    this.debug(`start ${task.id} for '${this.env.id}'`);
+    this.log(`==================================================`);
+    this.log(`start ${task.id} for '${this.env.id}'`);
 
     if (this.opt.isDebug)
       console.time(task.id);

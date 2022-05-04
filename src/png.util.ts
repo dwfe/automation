@@ -3,13 +3,13 @@ import {PNG, PNGWithMetadata} from 'pngjs';
 import * as JPEG from 'jpeg-js';
 import {RawImageData} from 'jpeg-js';
 import pixelmatch from 'pixelmatch';
-import {AutomationEnvironment, IAutomationEnvironmentOpt} from './env';
 import {defaultPixelmatchOptions} from './default'
 import {IImgCompareResult} from './task'
+import {Env, IEnvOpt} from './env';
 
 export class PngUtil {
 
-  constructor(public env: AutomationEnvironment) {
+  constructor(public env: Env) {
   }
 
   read(path: string): PNGWithMetadata {
@@ -51,7 +51,7 @@ export class PngUtil {
 
 //region Support
 
-  private get opt(): IAutomationEnvironmentOpt {
+  private get opt(): IEnvOpt {
     return this.env.opt;
   }
 

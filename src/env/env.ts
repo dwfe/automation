@@ -1,19 +1,19 @@
 import {prepareEnv} from '@do-while-for-each/env';
 import * as playwright from 'playwright';
 import {Browser, BrowserContext, Page} from 'playwright';
-import {IAutomationEnvironmentOpt} from './env.contract'
 import {ITask, TaskExecutor} from '../task';
+import {IEnvOpt} from './env.contract'
 import {PngUtil} from '../png.util';
 import {IStorage} from '../storage'
 
-export class AutomationEnvironment {
+export class Env {
 
-  static async of(opt: IAutomationEnvironmentOpt, id: string): Promise<AutomationEnvironment> {
+  static async of(opt: IEnvOpt, id: string): Promise<Env> {
     const {runMode, browserType, launchOpt, browserContext} = opt;
     prepareEnv(runMode || 'test');
     const browser = await playwright[browserType].launch(launchOpt);
     await browser.newContext(browserContext);
-    return new AutomationEnvironment(id, browser, opt)
+    return new Env(id, browser, opt)
   }
 
   readonly taskExecutor: TaskExecutor;
@@ -22,14 +22,14 @@ export class AutomationEnvironment {
 
   constructor(public readonly id: string,
               public readonly browser: Browser,
-              public readonly opt: IAutomationEnvironmentOpt) {
+              public readonly opt: IEnvOpt) {
     this.taskExecutor = new TaskExecutor(this);
     this.pngUtils = new PngUtil(this);
     this.storage = new opt.storage.variant(this);
   }
 
   close() {
-    if (!this.opt.isLeaveOpen?.env)
+    if (!this.opt.leaveOpen?.env)
       this.browser.close();
     this.storage.clean();
   }
@@ -50,7 +50,7 @@ export class AutomationEnvironment {
     await this.taskExecutor.run(tasks);
   }
 
-  debug(...args: string[]) {
+  log(...args: string[]) {
     if (!this.opt.isDebug)
       return;
     console.log(...args);
