@@ -5,9 +5,9 @@ import {TCommand} from '../cmd'
 
 export abstract class TaskAbstract implements ITask {
 
-  private allDataReceivedSubj = new Subj<any>({type: 'share', initValue: null});
-  private screenshotSubj = new Subj<Buffer | null>({type: 'share', initValue: null});
-  private compareScreenshotSubj = new Subj<IImgCompareResult | null>({type: 'share', initValue: null});
+  private allDataReceivedSubj = new Subj<any>();
+  private screenshotSubj = new Subj<Buffer>();
+  private compareScreenshotSubj = new Subj<IImgCompareResult>();
 
   constructor(public readonly id: string) {
   }
@@ -16,13 +16,13 @@ export abstract class TaskAbstract implements ITask {
 
   page!: Page;
 
-  allDataReceived = () => result(this.allDataReceivedSubj);
+  allDataReceived = () => this.allDataReceivedSubj.nonNullableValuePromise();
   setAllDataReceived = (): void => this.allDataReceivedSubj.setValue(true);
 
-  screenshot = () => result(this.screenshotSubj);
+  screenshot = () => this.screenshotSubj.nonNullableValuePromise();
   setScreenshot = (buf: Buffer): void => this.screenshotSubj.setValue(buf);
 
-  compareScreenshotResult = () => result(this.compareScreenshotSubj);
+  compareScreenshotResult = () => this.compareScreenshotSubj.nonNullableValuePromise();
   setCompareScreenshotResult = (result: IImgCompareResult): void => this.compareScreenshotSubj.setValue(result);
 
   stop(): void {
@@ -32,7 +32,3 @@ export abstract class TaskAbstract implements ITask {
   }
 
 }
-
-const result = async <T>({lastValue, nonNullableValuePromise}: Subj<T>): Promise<NonNullable<T>> =>
-  lastValue ?? nonNullableValuePromise()
-;
