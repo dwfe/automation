@@ -30,7 +30,7 @@ export class TaskExecutor {
         switch (command.cmd) {
           case 'newPage': {
             task.page = await this.env.newPage();
-            await task.afterPage?.();
+            await task.afterPageCreation?.();
             break;
           }
           case 'closePage': {

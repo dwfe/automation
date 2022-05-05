@@ -29,8 +29,8 @@ export interface ITask extends Partial<IStoppable> {
   afterScript?: TCommand[];
 
   page?: Page; // страница, на которой выполняется задача
-  afterPage?: () => Promise<void>;
-  delayForPageRenderingToComplete?: number;
+  afterPageCreation?: () => Promise<void>;
+  delayForPageRendering?: number;
 
   allDataReceived?: () => Promise<any>; // сигнализирует, что пришли все данные, которые ожидалось получить
   setAllDataReceived?: () => void;

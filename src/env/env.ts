@@ -50,6 +50,10 @@ export class Env {
     await this.taskExecutor.run(tasks);
   }
 
+  toString(): string {
+    return this.id;
+  }
+
   log(...args: string[]) {
     if (!this.opt.isDebug)
       return;

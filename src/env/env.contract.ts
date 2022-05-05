@@ -22,3 +22,5 @@ export interface IEnvOpt {
   },
   runMode?: TRunMode,
 }
+
+export type TEnvArgs = [IEnvOpt, string];
