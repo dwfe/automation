@@ -149,7 +149,7 @@ export class TaskExecutor {
   private startTask(task: ITask) {
     task.isActive = true;
 
-    this.log(`==================================================`);
+    this.log(' ')
     this.log(`start ${task.id} for '${this.env.id}'`);
 
     if (this.opt.isDebug)
@@ -162,7 +162,7 @@ export class TaskExecutor {
 
     if (this.opt.isDebug)
       console.timeEnd(task.id);
-    console.log(' ');
+    this.log(`==================================================`);
   }
 
 //endregion
