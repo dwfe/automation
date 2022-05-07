@@ -33,8 +33,8 @@
     "@do-while-for-each/math": "^1.0.28",
     "@do-while-for-each/rxjs": "^1.1.9",
     "@do-while-for-each/env": "^1.0.6",
-    "@do-while-for-each/fs": "^1.2.18",
-    "jpeg-js": "0.4.3",
+    "@do-while-for-each/fs": "^1.2.20",
+    "@do-while-for-each/test": "^1.0.1",
     "node-fetch": "2.6.7",
     "pixelmatch": "5.3.0",
     "playwright": "1.21.1"
