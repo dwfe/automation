@@ -48,21 +48,21 @@ export class PngUtil {
       isEqual: diffPixelsCount === 0,
       diffPixelsCount,
       diff: {
-        PNG: diffImg,
-        buf: this.writeBuffer(diffImg),
+        png: diffImg,
+        pngBuf: this.writeBuffer(diffImg),
       },
       orig: {
-        PNG: origImg,
-        buf: origImgBuf,
+        png: origImg,
+        pngBuf: origImgBuf,
       },
       toCompare: {
-        PNG: imgToCompare,
-        buf: imgToCompareBuf,
+        png: imgToCompare,
+        pngBuf: imgToCompareBuf,
       },
     };
   }
 
-  toJpeg(png: PNG, quality = 100): RawImageData<Buffer> {
+  static toJpeg(png: PNG, quality = 100): RawImageData<Buffer> {
     return JPEG.encode(png, quality);
   }
 

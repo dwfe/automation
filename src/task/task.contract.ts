@@ -60,7 +60,7 @@ export interface IImgCompareResult {
   toCompare: IImgPack; // картинка, которую надо было сравнить с оригиналом
 }
 
-interface IImgPack {
-  PNG: PNG;
-  buf: Buffer;
+export interface IImgPack {
+  png: PNG;
+  pngBuf: Buffer;
 }

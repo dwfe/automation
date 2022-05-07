@@ -15,7 +15,7 @@ export class EnvList {
   async init() {
     this.dispose();
     const list = await Promise.all(
-      this.args.map(([opt, id]) => Env.of(opt, id))
+      this.args.map(args => Env.of(...args))
     );
     this.list.push(...list);
   }
