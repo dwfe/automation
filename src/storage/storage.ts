@@ -39,7 +39,7 @@ export class Storage implements IStorage {
     this.updatePosition(task, meta);
     const {filePath, contentType} = this.file('get', task, meta);
     const buf = readFileSync(filePath);
-    this.log(`read ${meta.type} '${filePath}', size`, buf.length);
+    this.log(`read ${meta.type} from '${filePath}', size`, buf.length);
     return {buf, contentType};
   }
 
@@ -48,7 +48,7 @@ export class Storage implements IStorage {
     const {filePath, fileName, contentType} = this.file('set', task, meta);
     writeFileSync(filePath, buf);
     this.updateIndex(meta, {fileName, contentType});
-    this.log(`write ${meta.type} '${filePath}', size`, buf.length);
+    this.log(`write ${meta.type} to '${filePath}', size`, buf.length);
   }
 
 //region Структура хранилища
