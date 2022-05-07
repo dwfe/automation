@@ -162,6 +162,7 @@ export class TaskExecutor {
 
     if (this.opt.isDebug)
       console.timeEnd(task.id);
+    console.log(' ');
   }
 
 //endregion

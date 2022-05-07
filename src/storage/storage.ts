@@ -1,5 +1,5 @@
-import {lstatSync, readdirSync, readFileSync, unlinkSync, writeFileSync} from 'fs';
-import {ensureDirExists, FileJson} from '@do-while-for-each/fs';
+import {ensureDirExists, FileJson, isDirectory, removeForce} from '@do-while-for-each/fs';
+import {readdirSync, readFileSync, writeFileSync} from 'fs';
 import {join} from 'path';
 import {IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue} from './storage.contract'
 import {Env, IEnvOpt} from '../env';
@@ -142,11 +142,11 @@ export class Storage implements IStorage {
     FileJson.write(index, this.taskIndexFilePath, true);
   }
 
-//endregion
+//endregion Структура хранилища
 
 
 //region Clean
-// TODO перевести на fs
+
   clean() {
     this.log('==================================================');
     this.log(`clean storage`)
@@ -154,7 +154,7 @@ export class Storage implements IStorage {
   }
 
   private cleanDir(path: string) {
-    if (!lstatSync(path).isDirectory())
+    if (!isDirectory(path))
       return;
     const fileNames = readdirSync(path);
     if (fileNames.find(fileName => fileName === this.indexFileName)) { // ЕСЛИ в директории есть индексный файл
@@ -171,11 +171,11 @@ export class Storage implements IStorage {
       .filter(fileName => !indexFileNames.includes(fileName) && fileName !== this.indexFileName)
       .forEach(fileName => {
         this.log(` - remove file '${fileName}'`)
-        unlinkSync(join(dir, fileName));
+        removeForce(join(dir, fileName))
       });
   }
 
-//endregion
+//endregion Clean
 
 
 //region Support
@@ -188,7 +188,7 @@ export class Storage implements IStorage {
     return this.env.log(...args);
   }
 
-//endregion
+//endregion Support
 
 }
 
