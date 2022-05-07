@@ -58,8 +58,8 @@ export class TaskExecutor {
             if (this.opt.screenshot.type !== 'png')
               throw new Error(`Поддерживается только 'png' при сравнении скриншотов`);
             const origImgBuf = this.storage.get(task, {type: 'screenshot'}).buf;
-            const screenshot = await task.screenshot?.() as Buffer;
-            const compareResult = this.pngUtil.compareBuf(origImgBuf, screenshot);
+            const screenshotBuf = await task.screenshot?.() as Buffer;
+            const compareResult = this.pngUtil.compare(origImgBuf, screenshotBuf);
             task.setCompareScreenshotResult?.(compareResult);
             break;
           }

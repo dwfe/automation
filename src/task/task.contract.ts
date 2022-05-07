@@ -55,7 +55,12 @@ export interface ITask extends Partial<IStoppable> {
 export interface IImgCompareResult {
   isEqual: boolean;
   diffPixelsCount: number;
-  origImg: PNG;       // картинка оригинал
-  imgToCompare: PNG;  // картинка, которую надо было сравнить с оригиналом
-  diffImg: PNG;       // картинка результат сравнения
+  diff: IImgPack;      // картинка результат сравнения
+  orig: IImgPack;      // картинка оригинал
+  toCompare: IImgPack; // картинка, которую надо было сравнить с оригиналом
+}
+
+interface IImgPack {
+  PNG: PNG;
+  buf: Buffer;
 }
