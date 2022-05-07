@@ -149,7 +149,7 @@ export class Storage implements IStorage {
 
   clean() {
     this.log('==================================================');
-    this.log(`clean storage`)
+    this.log(`clean storage for "${this.env}"`)
     this.cleanDir(this.dir);
   }
 
