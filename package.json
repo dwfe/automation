@@ -41,9 +41,9 @@
   },
   "devDependencies": {
     "@do-while-for-each/tsconfig": "^1.0.3",
-    "@types/jpeg-js": "0.3.7",
     "@types/node-fetch": "2.5.12",
     "@types/pixelmatch": "5.2.4",
+    "@types/jpeg-js": "0.3.7",
     "@types/pngjs": "3.4.2"
   },
   "scripts": {
