@@ -8,12 +8,12 @@ import {IStorage} from '../storage'
 
 export class Env {
 
-  static async of(opt: IEnvOpt, id: string, taskIds: any[]): Promise<Env> {
+  static async of(opt: IEnvOpt, id: string): Promise<Env> {
     const {runMode, browserType, launchOpt, browserContext} = opt;
     prepareEnv(runMode || 'test');
     const browser = await playwright[browserType].launch(launchOpt);
     await browser.newContext(browserContext);
-    return new Env(id, browser, opt, taskIds)
+    return new Env(id, browser, opt)
   }
 
   readonly taskExecutor: TaskExecutor;
@@ -23,8 +23,7 @@ export class Env {
 
   constructor(public readonly id: string,
               public readonly browser: Browser,
-              public readonly opt: IEnvOpt,
-              public taskIds: any[]) {
+              public readonly opt: IEnvOpt) {
     this.taskExecutor = new TaskExecutor(this);
     this.taskFactory = new opt.taskFactory.variant(this);
     this.pngUtils = new PngUtil(this);

@@ -11,8 +11,8 @@ export abstract class TaskFactoryAbstract {
 
   abstract get(stage: any, id: any): ITask;
 
-  getAll(stage: any): ITask[] {
-    return this.env.taskIds.map(
+  getAll(taskIds: any[], stage: any): ITask[] {
+    return taskIds.map(
       id => this.get(stage, id)
     );
   }
