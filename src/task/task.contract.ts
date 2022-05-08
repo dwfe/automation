@@ -62,5 +62,5 @@ export interface IImgCompareResult {
 
 export interface IImgPack {
   png: PNG;
-  pngBuf: Buffer;
+  pngBuf?: Buffer;
 }

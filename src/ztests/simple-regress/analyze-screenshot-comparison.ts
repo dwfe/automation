@@ -1,9 +1,8 @@
 import {addAttach} from 'jest-html-reporters/helper';
 import {expect} from '@jest/globals';
-import {IImgPack, ITask} from '../task';
-import {PngUtil} from '../png.util';
-
-type BufferFormat = 'png' | 'jpg';
+import {IImgPack, ITask} from '../../task';
+import {BufferFormat} from './contract';
+import {PngUtil} from '../../png.util';
 
 export async function analyzeScreenshotComparison(task: ITask, bufferFormat: BufferFormat = 'png'): Promise<void> {
   const result = await (task as Required<ITask>).compareScreenshotResult();
@@ -19,7 +18,7 @@ function params(imgPack: IImgPack, description: string, bufferFormat: BufferForm
   return {attach: getAttach(imgPack, bufferFormat), description, bufferFormat};
 }
 
-function getAttach({png, pngBuf}: IImgPack, bufferFormat: BufferFormat): Buffer {
+function getAttach({png, pngBuf}: IImgPack, bufferFormat: BufferFormat): Buffer | undefined {
   switch (bufferFormat) {
     case 'png':
       return pngBuf;

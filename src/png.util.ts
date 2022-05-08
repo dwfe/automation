@@ -44,12 +44,13 @@ export class PngUtil {
     const diffImg = new PNG({width, height});
     const options = this.opt.pixelmatch || defaultPixelmatchOptions;
     const diffPixelsCount = pixelmatch(origImg.data, imgToCompare.data, diffImg.data, width, height, options);
+    const isEqual = diffPixelsCount === 0;
     return {
-      isEqual: diffPixelsCount === 0,
+      isEqual,
       diffPixelsCount,
       diff: {
         png: diffImg,
-        pngBuf: this.writeBuffer(diffImg),
+        pngBuf: isEqual ? undefined : this.writeBuffer(diffImg),
       },
       orig: {
         png: origImg,

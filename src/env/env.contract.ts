@@ -2,6 +2,7 @@ import {BrowserContextOptions, LaunchOptions} from 'playwright'
 import {TRunMode, Type} from '@do-while-for-each/common'
 import {PageScreenshotOptions} from 'playwright-core'
 import {PixelmatchOptions} from 'pixelmatch'
+import {TaskFactoryAbstract} from '../task';
 import {IStorage} from '../storage'
 
 export interface IEnvOpt {
@@ -10,6 +11,9 @@ export interface IEnvOpt {
   browserContext: BrowserContextOptions;
   screenshot: NonNullable<PageScreenshotOptions>;
   pixelmatch: PixelmatchOptions;
+  taskFactory: {
+    variant: Type<TaskFactoryAbstract>;
+  }
   storage: {
     variant: Type<IStorage>;
     dir: string;    // главная папка хранилища
@@ -23,4 +27,4 @@ export interface IEnvOpt {
   runMode?: TRunMode,
 }
 
-export type TEnvArgs = [IEnvOpt, string];
+export type TEnvArgs = [IEnvOpt, string, any[]]; // [opt, id, taskIds]

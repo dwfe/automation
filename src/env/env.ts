@@ -1,29 +1,32 @@
 import {prepareEnv} from '@do-while-for-each/env';
 import * as playwright from 'playwright';
 import {Browser, BrowserContext, Page} from 'playwright';
-import {ITask, TaskExecutor} from '../task';
+import {ITask, TaskExecutor, TaskFactoryAbstract} from '../task';
 import {IEnvOpt} from './env.contract'
 import {PngUtil} from '../png.util';
 import {IStorage} from '../storage'
 
 export class Env {
 
-  static async of(opt: IEnvOpt, id: string): Promise<Env> {
+  static async of(opt: IEnvOpt, id: string, taskIds: any[]): Promise<Env> {
     const {runMode, browserType, launchOpt, browserContext} = opt;
     prepareEnv(runMode || 'test');
     const browser = await playwright[browserType].launch(launchOpt);
     await browser.newContext(browserContext);
-    return new Env(id, browser, opt)
+    return new Env(id, browser, opt, taskIds)
   }
 
   readonly taskExecutor: TaskExecutor;
+  readonly taskFactory: TaskFactoryAbstract;
   readonly pngUtils: PngUtil;
   readonly storage: IStorage;
 
   constructor(public readonly id: string,
               public readonly browser: Browser,
-              public readonly opt: IEnvOpt) {
+              public readonly opt: IEnvOpt,
+              public taskIds: any[]) {
     this.taskExecutor = new TaskExecutor(this);
+    this.taskFactory = new opt.taskFactory.variant(this);
     this.pngUtils = new PngUtil(this);
     this.storage = new opt.storage.variant(this);
   }

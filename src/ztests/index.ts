@@ -1,1 +1,1 @@
-export * from './analyze-screenshot-comparison';
+export * from './simple-regress';
