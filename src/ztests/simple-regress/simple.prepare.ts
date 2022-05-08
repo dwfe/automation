@@ -1,7 +1,6 @@
-import {EnvList, TEnvArgs} from '../../env';
+import {EnvList} from '../../env';
 
-export async function simplePrepare(envArgs: TEnvArgs[], stage: any = 'prepare') {
-  const envList = new EnvList(envArgs);
+export async function simplePrepare(envList: EnvList, stage: any = 'prepare') {
   await envList.init();
   for (const env of envList.get())
     await env.run([
