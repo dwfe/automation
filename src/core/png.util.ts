@@ -45,22 +45,22 @@ export class PngUtil {
     const options = this.opt.pixelmatch || defaultPixelmatchOptions;
     const diffPixelsCount = pixelmatch(origImg.data, imgToCompare.data, diffImg.data, width, height, options);
     const isEqual = diffPixelsCount === 0;
-    return {
-      isEqual,
-      diffPixelsCount,
-      diff: {
+    const result: IImgCompareResult = {isEqual, diffPixelsCount};
+    if (!isEqual) {
+      result.diff = {
         png: diffImg,
-        pngBuf: isEqual ? undefined : this.writeBuffer(diffImg),
-      },
-      orig: {
+        pngBuf: this.writeBuffer(diffImg),
+      };
+      result.orig = {
         png: origImg,
-        pngBuf: isEqual ? undefined : origImgBuf,
-      },
-      toCompare: {
+        pngBuf: origImgBuf,
+      };
+      result.toCompare = {
         png: imgToCompare,
-        pngBuf: isEqual ? undefined : imgToCompareBuf,
-      },
-    };
+        pngBuf: imgToCompareBuf,
+      };
+    }
+    return result;
   }
 
   static toJpeg(png: PNG, quality = 100): RawImageData<Buffer> {

@@ -6,9 +6,9 @@ import {BufferFormat} from './contract';
 export async function analyzeScreenshotComparison(task: ITask, bufferFormat: BufferFormat = 'png'): Promise<void> {
   const result = await (task as Required<ITask>).compareScreenshotResult();
   if (!result.isEqual) {
-    await addAttach(params(result.diff, 'DIFF', bufferFormat));
-    await addAttach(params(result.orig, 'ORIGINAL', bufferFormat));
-    await addAttach(params(result.toCompare, 'TO COMPARE', bufferFormat));
+    await addAttach(params(result.diff as IImgPack, 'DIFF', bufferFormat));
+    await addAttach(params(result.orig as IImgPack, 'ORIGINAL', bufferFormat));
+    await addAttach(params(result.toCompare as IImgPack, 'TO COMPARE', bufferFormat));
   }
   expect(result.isEqual).toBeTruthy();
 }
