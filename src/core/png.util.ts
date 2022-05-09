@@ -54,11 +54,11 @@ export class PngUtil {
       },
       orig: {
         png: origImg,
-        pngBuf: origImgBuf,
+        pngBuf: isEqual ? undefined : origImgBuf,
       },
       toCompare: {
         png: imgToCompare,
-        pngBuf: imgToCompareBuf,
+        pngBuf: isEqual ? undefined : imgToCompareBuf,
       },
     };
   }
