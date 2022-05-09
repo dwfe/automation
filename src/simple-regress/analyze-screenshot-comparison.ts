@@ -1,8 +1,7 @@
 import {addAttach} from 'jest-html-reporters/helper';
 import {expect} from '@jest/globals';
-import {IImgPack, ITask} from '../../task';
+import {IImgPack, ITask, PngUtil} from '../core';
 import {BufferFormat} from './contract';
-import {PngUtil} from '../../png.util';
 
 export async function analyzeScreenshotComparison(task: ITask, bufferFormat: BufferFormat = 'png'): Promise<void> {
   const result = await (task as Required<ITask>).compareScreenshotResult();

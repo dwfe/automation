@@ -1,11 +1,5 @@
-export * from './cmd';
-export * from './env';
-export * from './interceptor';
-export * from './storage';
-export * from './task';
-export * from './default';
-export * from './png.util';
-export * from './ztests';
+export * from './core';
+export * from './simple-regress';
 
 import * as console2 from 'console';
 

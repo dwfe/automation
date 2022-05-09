@@ -1,6 +1,6 @@
 import {afterAll, beforeAll, describe, test} from '@jest/globals';
 import {analyzeScreenshotComparison} from './analyze-screenshot-comparison';
-import {Env, EnvList, TEnvArgs} from '../../env';
+import {Env, EnvList, TEnvArgs} from '../core';
 
 export function simpleRegress(envArgs: TEnvArgs[], taskIds: any[], stage: any = 'test') {
   const envList = new EnvList(envArgs);

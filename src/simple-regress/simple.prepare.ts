@@ -1,4 +1,4 @@
-import {EnvList, TEnvArgs} from '../../env';
+import {EnvList, TEnvArgs} from '../core';
 
 export async function simplePrepare(envArgs: TEnvArgs[], taskIds: any[], stage: any = 'prepare') {
   const envList = new EnvList(envArgs);
