@@ -1,5 +1,5 @@
+// import {expect} from '@jest/globals';
 import {addAttach} from 'jest-html-reporters/helper';
-import {expect} from '@jest/globals';
 import {IImgPack, ITask, PngUtil} from '../core';
 import {BufferFormat} from './contract';
 
