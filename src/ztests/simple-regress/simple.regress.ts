@@ -1,8 +1,13 @@
 import {afterAll, beforeAll, describe, test} from '@jest/globals';
 import {analyzeScreenshotComparison} from './analyze-screenshot-comparison';
-import {Env, EnvList} from '../../env';
+import {Env, EnvList, TEnvArgs} from '../../env';
 
-export function simpleRegress(envList: EnvList, taskIds: any[], stage: any = 'test') {
+export function simpleRegress(envArgs: TEnvArgs[], taskIds: any[], stage: any = 'test') {
+  const envList = new EnvList(envArgs);
+  testRun(envList, taskIds, stage);
+}
+
+async function testRun(envList: EnvList, taskIds: any[], stage: any) {
 
   beforeAll(async () => {
     await envList.init();
