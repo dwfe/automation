@@ -23,7 +23,7 @@ export interface ITask extends Partial<IStoppable> {
    *   - иметь Id. Одно из основных использований Id - это хранение файлов (скриншот, response)
    *   - отдавать Список команд.
    */
-  id: string;
+  id: any; // желательно, чтобы конвертировался в лаконичное строковое значение, e.g.: '006_01-First-Page'
   getScript: () => TCommand[];
   beforeScript?: TCommand[];
   afterScript?: TCommand[];

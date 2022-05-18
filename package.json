@@ -25,19 +25,21 @@
   "license": "MIT",
   "files": [
     "dist",
+    "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ],
   "dependencies": {
-    "@do-while-for-each/common": "^1.2.14",
+    "@do-while-for-each/common": "^1.2.16",
     "@do-while-for-each/math": "^1.0.28",
     "@do-while-for-each/rxjs": "^1.1.9",
     "@do-while-for-each/env": "^1.0.6",
-    "@do-while-for-each/fs": "^1.2.20",
+    "@do-while-for-each/fs": "^1.2.21",
     "@do-while-for-each/test": "^1.0.1",
     "node-fetch": "2.6.7",
     "pixelmatch": "5.3.0",
-    "playwright": "1.21.1"
+    "playwright": "1.22.1",
+    "jpeg-js": "0.4.3"
   },
   "devDependencies": {
     "@do-while-for-each/tsconfig": "^1.0.3",

@@ -9,7 +9,7 @@ export abstract class TaskAbstract implements ITask {
   private screenshotSubj = new Subj<Buffer>();
   private compareScreenshotSubj = new Subj<IImgCompareResult>();
 
-  constructor(public readonly id: string) {
+  constructor(public readonly id: any) {
   }
 
   abstract getScript(): TCommand[];
