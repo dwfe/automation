@@ -45,7 +45,7 @@ export class TaskExecutor {
             break;
           }
           case 'screenshot': {
-            checkFields(task, ['page', 'beforeScreenshot']);
+            checkFields(task, ['page']);
             await task.beforeScreenshot?.();
             const buf = await page.screenshot();
             task.setScreenshot?.(buf);
