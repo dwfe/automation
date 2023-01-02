@@ -30,15 +30,15 @@
     "README.md"
   ],
   "dependencies": {
-    "@do-while-for-each/common": "1.x.x",
-    "@do-while-for-each/math": "1.x.x",
+    "@do-while-for-each/common": "2.x.x",
+    "@do-while-for-each/math": "2.x.x",
     "@do-while-for-each/rxjs": "1.x.x",
     "@do-while-for-each/env": "1.x.x",
     "@do-while-for-each/fs": "1.x.x",
     "@do-while-for-each/test": "1.x.x",
     "node-fetch": "2.6.7",
     "pixelmatch": "5.3.0",
-    "playwright": "1.22.1",
+    "playwright": "1.29.1",
     "jpeg-js": "0.4.3"
   },
   "devDependencies": {
@@ -52,8 +52,8 @@
     "clean": "dwfeFs cleanDir . --fileNames=\"dist;node_modules;package-lock.json\"",
     "build": "dwfeFs rmForce dist --noConfirm && tsc -b src/tsconfig.json",
     "version": "npm run build",
-    "postversion": "git push",
-    "deploy": "npm version patch && npm publish"
+    "deploy": "npm version patch && npm publish",
+    "tgz": "npm run build && npm pack"
   },
   "publishConfig": {
     "access": "public"

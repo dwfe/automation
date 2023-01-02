@@ -1,4 +1,4 @@
-import {TPoint} from '@do-while-for-each/math'
+import {IPoint} from '@do-while-for-each/math'
 import {Mouse, Page} from 'playwright'
 
 export type TCommand =
@@ -67,7 +67,7 @@ export interface IFillCommand {
 export interface IMouseClickCommand {
   cmd: 'mouseClick';
   data: {
-    point: TPoint;
+    point: IPoint;
     options?: Parameters<Mouse['click']>[2];
   };
 }

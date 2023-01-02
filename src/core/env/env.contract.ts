@@ -1,5 +1,5 @@
+import {IClassConstructor, IRunMode} from '@do-while-for-each/common'
 import {BrowserContextOptions, LaunchOptions} from 'playwright'
-import {TRunMode, Type} from '@do-while-for-each/common'
 import {PageScreenshotOptions} from 'playwright-core'
 import {PixelmatchOptions} from 'pixelmatch'
 import {TaskFactoryAbstract} from '../task';
@@ -12,10 +12,10 @@ export interface IEnvOpt {
   screenshot: NonNullable<PageScreenshotOptions>;
   pixelmatch: PixelmatchOptions;
   taskFactory: {
-    variant: Type<TaskFactoryAbstract>;
+    variant: IClassConstructor<TaskFactoryAbstract>;
   }
   storage: {
-    variant: Type<IStorage>;
+    variant: IClassConstructor<IStorage>;
     dir: string;    // главная папка хранилища
   },
   urlOrigin?: string; // используется там, где надо собрать url из относительного пути. Например, TaskExecutor при выполнении команды 'goto'
@@ -24,7 +24,7 @@ export interface IEnvOpt {
     env?: boolean;           // флаг, надо ли закрыть окружение, когда у него будет вызван метод .close()
     pageOnTaskEnd?: boolean; // флаг, надо ли оставить страницу открытой после выполнения всех команд задачи
   },
-  runMode?: TRunMode,
+  runMode?: IRunMode,
 }
 
 export type TEnvArgs = [IEnvOpt, string]; // [opt, id]
